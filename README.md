@@ -5,14 +5,14 @@ Build and deploy production-grade langgraph agents on Azure using Chinook databa
 
 Clone the repo:
 ```console
-git clone https://github.com/shivachittamuru/Contoso-Coffee-RAG.git
-cd Contoso-Coffee-RAG
+git clone https://github.com/shivachittamuru/langgraph-agents-on-azure.git
+cd langgraph-agents-on-azure
 ```
 
 Create a conda environment:
 ```console
-conda create --name coffee python=3.10
-conda activate coffee
+conda create --name <env-name> python=3.10
+conda activate <env-name>
 ```
 
 Install `PIP` requirements
