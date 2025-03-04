@@ -21,3 +21,9 @@ pip install -r requirements.txt
 ```
 
 Update the values in `.env-sample` and rename it to `.env`.
+
+## Contributors
+
+- Alexis Joseph
+- Caroline Matthews
+- Daniel Kondrashevich
