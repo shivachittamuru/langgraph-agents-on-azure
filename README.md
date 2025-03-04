@@ -27,3 +27,4 @@ Update the values in `.env-sample` and rename it to `.env`.
 - Alexis Joseph
 - Caroline Matthews
 - Daniel Kondrashevich
+- Shiva Chittamuru
