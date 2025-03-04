@@ -1,0 +1,26 @@
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# virtualenv
+venv/
+ENV/
+
+# Environment Variables
+.env
+
+# Ignore VS Code and IDE-specific files
+.vscode/
+.idea/
+
+# Checkpointer temporary files
+**/state.db-shm
+**/state.db-wal
