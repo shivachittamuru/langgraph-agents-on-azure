@@ -6,7 +6,7 @@ With the growing demand for AI-powered agents capable of interacting with databa
 
 **LangGraph**, a cutting-edge framework for building AI agents, has emerged as a preferred choice for implementing **stateful, modular, and customizable agents**. Its ability to construct **state machines** enables controlled and deterministic workflows, making it ideal for SQL query management, error handling, and conversation state retention.
 
-This project delivers an **end-to-end production-grade implementation** of an SQL Agent designed to work with the **Chinook database** (a sample database representing a digital music store). The solution covers **design, development, and deployment** phases, ensuring best practices for **reliability, security, and scalability** when deploying on **Azure**.
+This project delivers an **end-to-end production-grade implementation** of a text-to-SQL Agent designed to work with the **Chinook database** (a sample database representing a digital music store). The solution covers **design, development, and deployment** phases, ensuring best practices for **reliability, security, and scalability** when deploying on **Azure**.
 
 ## 🎯 Key Features & Objectives
 
