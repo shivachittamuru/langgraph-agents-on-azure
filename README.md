@@ -2,11 +2,11 @@
 
 ## 📌 Overview
 
-With the growing demand for AI-powered agents capable of interacting with databases, **text-to-SQL Agents** have become essential for enterprises seeking natural language interfaces for querying structured data. Many organizations are actively exploring **single-agent and multi-agentic flows** to streamline database interactions, automate insights retrieval, and enhance user experiences.
+With the growing demand for AI-powered agents capable of interacting with databases, **Text2SQL Agents** have become essential for enterprises seeking natural language interfaces for querying structured data. Many organizations are actively exploring **single-agent and multi-agentic flows** to streamline database interactions, automate insights retrieval, and enhance user experiences.
 
 **LangGraph**, a cutting-edge framework for building AI agents, has emerged as a preferred choice for implementing **stateful, modular, and customizable agents**. Its ability to construct **state machines** enables controlled and deterministic workflows, making it ideal for SQL query management, error handling, and conversation state retention.
 
-This project delivers an **end-to-end production-grade implementation** of a text-to-SQL Agent designed to work with the **Chinook database** (a sample database representing a digital music store). The solution covers **design, development, and deployment** phases, ensuring best practices for **reliability, security, and scalability** when deploying on **Azure**.
+This project delivers an **end-to-end production-grade implementation** of a Text2SQL Agent designed to work with the **Chinook database** (a sample database representing a digital music store). The solution covers **design, development, and deployment** phases, ensuring best practices for **reliability, security, and scalability** when deploying on **Azure**.
 
 ## 🎯 Key Features & Objectives
 
