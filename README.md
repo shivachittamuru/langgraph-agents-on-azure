@@ -1,4 +1,4 @@
-# 🚀 Building and Deploying Production-Grade LangGraph Agent(s) on Azure
+# 🚀 Build and Deploy Production-Grade LangGraph Agent(s) on Azure
 
 ## 📌 Overview
 
@@ -73,7 +73,8 @@ cd backend
 uvicorn main:app --reload
 ```
 
-Open [http://localhost:8000](http://localhost:8000) to view it in your browser, and [http://localhost:8000/docs](http://localhost:8000/docs) to view and test the APIs. 
+Open [http://localhost:8000](http://localhost:8000) to view it in your browser, and [http://localhost:8000/docs](http://localhost:8000/docs) to view and test the APIs.  
+
 Use the [test_api.ipynb](test_api.ipynb) notebook to test the APIs with various questions. Feel free to tweak the code and observe the changes to evaluate the agent's accuracy and consistency.
 
 #### 3️⃣ Start the Frontend React UI
