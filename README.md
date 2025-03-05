@@ -64,7 +64,7 @@ pip install -r requirements.txt
 ### 🚀 Run the Application
 
 #### 1️⃣ Configure Environment Variables  
-- Open `.env-sample`, update the environment variables with your **Azure configuration**, and rename it to `.env`.  
+- Open `.env-sample` in both backend and frontend, update the environment variables with your **Azure configuration**, and rename it to `.env`.  
 
 #### 2️⃣ Start the Backend Agent API  
 Run the following commands in your terminal:  
@@ -72,6 +72,8 @@ Run the following commands in your terminal:
 cd backend
 uvicorn main:app --reload
 ```
+Open [http://localhost:8000](http://localhost:8000) to view it in your browser.
+Open [http://localhost:8000/docs](http://localhost:8000/docs) to view the APIs. 
 
 #### 3️⃣ Start the Frontend React UI
 3. Run the following commands in your terminal:
@@ -80,6 +82,7 @@ cd frontend
 npm install  # Install dependencies (only needed once)
 npm start    # Start the frontend server
 ```
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 ## 📝 Agent Test Questions  

@@ -1,0 +1,84 @@
+.chat-input-form {
+    display: flex;
+    height: 74px;
+    padding: 12px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 16px;
+    border: 1px solid #EEE;
+    background: #F8FAFC;
+  }
+  
+  .chat-input-box {
+    color: rgba(0, 0, 0, 0.64);
+  }
+  
+  .chat-input-box::placeholder {
+    color: rgba(0, 0, 0, 0.34);
+  }
+  
+  .chat-input-box {
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-right: 5px;
+    border: none;
+    background: #F8FAFC;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+    height: 30px;
+    overflow-y: auto;
+    resize: none;
+  }
+  
+  .chat-input-box::-webkit-scrollbar {
+    width: 6px;
+    padding: 1px;
+  }
+  
+  .chat-input-box::-webkit-scrollbar-button {
+    display: none !important;
+  }
+  
+  .chat-input-box::-webkit-scrollbar-track {
+    background-color: #ffffff00;
+    border-radius: 10px;
+  }
+  
+  .chat-input-box::-webkit-scrollbar-thumb {
+    background-color: #E0E0E0;
+    border-radius: 10px;
+  }
+  
+  .chat-input-box::-webkit-scrollbar-thumb:hover {
+    background-color: #d3d3d3;
+  }
+  
+  .chat-input-box:focus {
+    outline: none;
+    border: none;
+  }
+  
+  .chat-input-button {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 44px;
+    background: #058ECD;
+    border: none;
+  }
+  
+  .chat-input-button:hover {
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional: reduces shadow to look pressed */
+  }

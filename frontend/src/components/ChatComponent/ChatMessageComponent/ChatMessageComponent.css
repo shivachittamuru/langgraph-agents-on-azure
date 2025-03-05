@@ -1,0 +1,91 @@
+.ai-message-container {
+  display: inline-flex;
+  padding: 12px 20px 12px 8px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 24px;
+  background: #FFF;
+  color: #111;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 175% */
+  letter-spacing: -0.16px;
+  text-align: left;
+}
+
+.ai-message-markdown {
+  display: block; /* Ensure it takes full width */
+  width: 100%; /* Ensure it takes the full width */
+}
+
+.ai-message-container svg {
+  min-width: 58px;
+  min-height: 58px;
+}
+
+.user-message-container {
+  display: inline-flex;
+  padding: 8px 8px 8px 20px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 24px;
+  background: #E1F1FF;
+  color: #111;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.svg-circle {
+  min-width: 58px;
+  min-height: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #F7FBFF;
+}
+
+.user-message-markdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.plot-container {
+  display: block; /* Change to block to ensure it takes full width */
+  width: 100%; /* Ensure it takes the full width */
+  margin-top: 12px; /* Add some space between text and plot */
+  padding: 12px 20px;
+  border-radius: 24px;
+  background: #FFF;
+  color: #111;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 175% */
+  letter-spacing: -0.16px;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border-top: 1px solid #c1bfbf;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  text-align: center;
+}
