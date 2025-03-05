@@ -45,18 +45,52 @@ git clone https://github.com/shivachittamuru/langgraph-agents-on-azure.git
 cd langgraph-agents-on-azure
 ```
 
-Create a conda environment:
+### Option 1: Using Conda (Recommended)
+If you have Anaconda or Miniconda installed, you can set up the environment using Conda:
 ```console
 conda create --name <env-name> python=3.10
 conda activate <env-name>
-```
-
-Install `PIP` requirements
-```console
 pip install -r requirements.txt
 ```
 
-Update the values in `.env-sample` and rename it to `.env`.
+### Option 2: Using Virtualenv
+```console
+python3 -m venv <env-name>
+source <env-name>/bin/activate  # On macOS/Linux
+<env-name>\Scripts\activate  # On Windows
+pip install -r requirements.txt
+```
+
+### 🚀 Run the Application
+
+#### 1️⃣ Configure Environment Variables  
+- Open `.env-sample`, update the environment variables with your **Azure configuration**, and rename it to `.env`.  
+
+#### 2️⃣ Start the Backend Agent API  
+Run the following commands in your terminal:  
+```console
+cd backend
+uvicorn main:app --reload
+```
+
+#### 3️⃣ Start the Frontend React UI
+3. Run the following commands in your terminal:
+```console
+cd frontend
+npm install  # Install dependencies (only needed once)
+npm start    # Start the frontend server
+```
+
+
+## 📝 Agent Test Questions  
+
+1. *Can you tell me the names of popular albums in the database?*  
+2. *Find albums released by artists who have more than 5 albums.*  
+3. *Who are the top 5 employees who have made the most sales?*  
+4. *Can you list the top 5 most expensive tracks?*  
+5. *Which album has the most tracks?*  
+
+
 
 ## 🛠️ Future Enhancements
 - 🔹 Implement new agents such as a Visualization Agent to create plots for numeric analysis.
