@@ -72,8 +72,9 @@ Run the following commands in your terminal:
 cd backend
 uvicorn main:app --reload
 ```
-Open [http://localhost:8000](http://localhost:8000) to view it in your browser.
-Open [http://localhost:8000/docs](http://localhost:8000/docs) to view the APIs. 
+
+Open [http://localhost:8000](http://localhost:8000) to view it in your browser, and [http://localhost:8000/docs](http://localhost:8000/docs) to view and test the APIs. 
+Use the [test_api.ipynb](test_api.ipynb) notebook to test the APIs with various questions. Feel free to tweak the code and observe the changes to evaluate the agent's accuracy and consistency.
 
 #### 3️⃣ Start the Frontend React UI
 3. Run the following commands in your terminal:
@@ -82,6 +83,7 @@ cd frontend
 npm install  # Install dependencies (only needed once)
 npm start    # Start the frontend server
 ```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
