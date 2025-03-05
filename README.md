@@ -1,8 +1,8 @@
-# 🚀 Building and Deploying Production-Grade Database Agent(s) with LangGraph on Azure
+# 🚀 Building and Deploying Production-Grade text-to-SQL Agent(s) with LangGraph on Azure
 
 ## 📌 Overview
 
-With the growing demand for AI-powered agents capable of interacting with databases, **SQL Agents** have become essential for enterprises seeking natural language interfaces for querying structured data. Many organizations are actively exploring **single-agent and multi-agentic flows** to streamline database interactions, automate insights retrieval, and enhance user experiences.
+With the growing demand for AI-powered agents capable of interacting with databases, **text-to-SQL Agents** have become essential for enterprises seeking natural language interfaces for querying structured data. Many organizations are actively exploring **single-agent and multi-agentic flows** to streamline database interactions, automate insights retrieval, and enhance user experiences.
 
 **LangGraph**, a cutting-edge framework for building AI agents, has emerged as a preferred choice for implementing **stateful, modular, and customizable agents**. Its ability to construct **state machines** enables controlled and deterministic workflows, making it ideal for SQL query management, error handling, and conversation state retention.
 
