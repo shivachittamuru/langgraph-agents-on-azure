@@ -1,4 +1,4 @@
-# 🚀 Building and Deploying Production-Grade text-to-SQL Agent(s) with LangGraph on Azure
+# 🚀 Building and Deploying Production-Grade LangGraph Agent(s) on Azure
 
 ## 📌 Overview
 
@@ -8,7 +8,7 @@ With the growing demand for AI-powered agents capable of interacting with databa
 
 This project delivers an **end-to-end production-grade implementation** of a Text2SQL Agent designed to work with the **Chinook database** (a sample database representing a digital music store). The solution covers **design, development, and deployment** phases, ensuring best practices for **reliability, security, and scalability** when deploying on **Azure**.
 
-## 🎯 Key Features & Objectives
+## 🎯 Key Features
 
 ### ✅ SQL Agent Development
 - Built a **custom SQLAgent class** from scratch using the **Chinook SQLite database**.

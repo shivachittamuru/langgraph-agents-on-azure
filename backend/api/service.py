@@ -170,3 +170,41 @@ async def invoke_sql_agent(input: UserInput, sql_agent: AzureSqlAgent = Depends(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+async def message_generator(input: StreamInput) -> AsyncGenerator[str, None]:
+    """Generate a stream messages from the supervisor agent."""
+    sql_agent = app.state.sql_agent
+    kwargs, run_id = _parse_input(input)
+
+    node_to_stream = "query_agent" 
+    
+    with root_span(tracer=tracer, name = "API-Stream-SqlAgent" + " - " + input.message, agent="AzureSqlAgent") as root:
+        thread_id = kwargs["config"]["configurable"]["thread_id"]
+        root.set_attribute("thread_id", str(thread_id))
+        async for event in sql_agent.graph.astream_events(**kwargs, version="v2"):
+            if not event:
+                continue
+            
+            if (
+                event["event"] == "on_chat_model_stream" 
+                and event["metadata"].get("langgraph_node", "") == node_to_stream
+                and input.stream_tokens
+            ):
+                data = event["data"]
+                # print(data["chunk"].content, end="")
+                chunk = data["chunk"].content
+                if chunk:
+                    yield chunk
+                continue
+            
+
+@app.post("/sql-stream")
+async def stream_agent(input: StreamInput) -> StreamingResponse:
+    """
+    Stream the agent's response to a user input
+    Use thread_id to persist and continue a multi-turn conversation.
+    """
+    return StreamingResponse(
+        message_generator(input),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
+    )
