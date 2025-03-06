@@ -75,7 +75,7 @@ uvicorn main:app --reload
 
 Open [http://localhost:8000](http://localhost:8000) to view it in your browser, and [http://localhost:8000/docs](http://localhost:8000/docs) to view and test the APIs.  
 
-Use the [test_api.ipynb](test_api.ipynb) notebook to test the APIs with various questions. Feel free to tweak the code and observe the changes to evaluate the agent's accuracy and consistency.
+Use the [test_agent_api.ipynb](test_agent_api.ipynb) notebook to test the APIs with various questions. Feel free to tweak the code and observe the changes to evaluate the agent's accuracy and consistency.
 
 #### 3️⃣ Start the Frontend React UI
 3. Run the following commands in your terminal:

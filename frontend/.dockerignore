@@ -1,0 +1,30 @@
+# Ignore node_modules (dependencies should be installed in the container)
+node_modules
+
+# Ignore build output (will be generated in the container)
+build
+
+# Ignore local environment files
+# .env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore Git-related files
+.git
+.gitignore
+
+# Ignore editor config files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore Docker-related files
+Dockerfile

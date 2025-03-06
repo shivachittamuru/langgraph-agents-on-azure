@@ -1,0 +1,41 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyo
+*.pyo
+*.pkl
+*.log
+
+# # Ignore virtual environment directories
+# agentenv/
+# venv/
+# env/
+# .venv/
+# *.egg-info/
+
+# Ignore environment variables file (if it contains sensitive data)
+# .env
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore VS Code and IDE-specific files
+.vscode/
+.idea/
+
+# Ignore image, data, and example files that aren't needed in the container
+flows/
+*.jpeg
+*.jpg
+*.png
+*.xls
+*.xlsx
+
+# Ignore Docker-related files (if rebuilding within container)
+Dockerfile
+docker-compose.yml
+
+# Ignore other unnecessary files
+# *.db
