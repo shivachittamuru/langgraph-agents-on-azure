@@ -16,7 +16,7 @@ __pycache__/
 # *.egg-info/
 
 # Ignore environment variables file (if it contains sensitive data)
-# .env
+.env
 
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
