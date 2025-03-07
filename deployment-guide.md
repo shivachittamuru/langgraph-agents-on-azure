@@ -21,7 +21,6 @@ docker images
 # However, ensure that you do not include the .env file in the Docker image for security reasons.
 # Instead, use the -e flag to provide environment variables when running the container.
 
-```console
 docker run -d -p 80:80 ^
     -e AZURE_OPENAI_DEPLOYMENT_NAME=<YOUR-DEPLOYMENT-NAME> ^
     -e AZURE_OPENAI_API_KEY=<YOUR-API-KEY> ^
@@ -36,7 +35,6 @@ docker run -d -p 80:80 ^
     -e PGDATABASE=<YOUR-PG-DATABASE> ^
     -e PG_VECTOR_PASSWORD="<YOUR-PG-PASSWORD>" ^
     chinook-backend:latest
-```
 
 docker ps
 
