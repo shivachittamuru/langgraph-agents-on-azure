@@ -1,6 +1,6 @@
-# Deploying a Containerized Application to Azure Web App
+# Cloud-native Deployment to Azure
 
-This guide walks you through the process of creating Docker images from your backend and frontend directories, pushing them to Azure Container Registry (ACR), and deploying them to an Azure Web App.
+This guide walks you through the process of creating Docker images from your backend and frontend directories, pushing them to Azure Container Registry (ACR), and deploying them to Azure Web App and Azure Kubernetes Service (AKS).
 
 ### Creating Docker Images Locally
 
