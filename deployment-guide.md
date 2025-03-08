@@ -2,7 +2,7 @@
 
 This guide walks you through the process of creating Docker images from your backend and frontend directories, pushing them to Azure Container Registry (ACR), and deploying them to Azure Web App and Azure Kubernetes Service (AKS).
 
-### Creating Docker Images Locally
+### Create Docker Images Locally
 
 Ensure you have Docker Desktop or a Docker terminal installed. Run the following commands to build images and run containers locally for both backend and frontend applications.
 
@@ -55,7 +55,7 @@ docker stop <container-name>
 
 This will create Docker images and run the containers. If your app is a web service, you can access it via http://localhost in your browser (or the mapped port).
 
-### Tagging and Pushing to Azure Container Registry (ACR)
+### Tag and Push to Azure Container Registry (ACR)
 
 Before pushing your images, ensure you have an active Azure account and ACR setup.
 
@@ -82,7 +82,7 @@ docker push <YOUR-ACR-NAME>.azurecr.io/chinook-frontend:latest
 az acr repository list --name <YOUR-ACR-NAME> --output table
 ```
 
-### Deploying to Azure App Service
+### Deploy to Azure App Service
 
 After pushing the images, deploy them to an Azure Web App with the following steps:
 
@@ -138,13 +138,21 @@ az group create --name <YOUR-RESOURCE-GROUP-NAME> --location <YOUR-LOCATION>
 ```
 
 ```console
+# Register Microsoft.ContainerService namespace with your subscription
+az provider register --namespace Microsoft.ContainerService
+
 # Create an AKS cluster
 az aks create --resource-group <YOUR-RESOURCE-GROUP-NAME> --name <YOUR-AKS-CLUSTER-NAME> --node-count 1 --enable-addons monitoring --generate-ssh-keys
 ```
 
+
+
 ```console
-# Get AKS credentials
+# Get AKS credentials to setup AKS connection
 az aks get-credentials --resource-group <YOUR-RESOURCE-GROUP-NAME> --name <YOUR-AKS-CLUSTER-NAME>
+
+# Verify Connection
+kubectl get nodes
 ```
 
 ```console
@@ -166,7 +174,7 @@ metadata:
     name: chinook-backend
     namespace: chinook
 spec:
-    replicas: 1
+    replicas: 2
     selector:
         matchLabels:
             app: chinook-backend
@@ -180,6 +188,13 @@ spec:
                 image: <YOUR-ACR-NAME>.azurecr.io/chinook-backend:latest
                 ports:
                 - containerPort: 80
+                resources:
+                limits:
+                    memory: "256Mi"
+                    cpu: "250m"
+                requests:
+                    memory: "128Mi"
+                    cpu: "125m" 
                 env:
                 - name: AZURE_OPENAI_DEPLOYMENT_NAME
                     value: "<YOUR-DEPLOYMENT-NAME>"
@@ -211,6 +226,11 @@ EOF
 ```
 
 ```console
+# Get the external IP addresses for the backend service to update it below
+kubectl get services --namespace chinook
+```
+
+```console
 # Deploy frontend to AKS
 kubectl apply -f - <<EOF
 apiVersion: apps/v1
@@ -233,6 +253,16 @@ spec:
                 image: <YOUR-ACR-NAME>.azurecr.io/chinook-frontend:latest
                 ports:
                 - containerPort: 80
+                resources:
+                limits:
+                    memory: "256Mi"
+                    cpu: "250m"
+                requests:
+                    memory: "128Mi"
+                    cpu: "125m"
+            env:
+            - name: REACT_APP_API_URL
+                value: "<EXTERNAL-IP-of-your-AKS-Backend-Service>"
             imagePullSecrets:
             - name: acr-secret
 EOF

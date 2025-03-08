@@ -29,6 +29,8 @@ This project delivers an **end-to-end production-grade implementation** of a Tex
 - Implemented **Azure AI Foundry tracing** to monitor and log agent execution.
 - Captured **agent runs, request-response cycles, and error diagnostics** for debugging and analytics.
 
+> **Note:** If you are new to the LangGraph framework, navigate to `backend\notebooks` and execute the 5 notebooks in order to see the above key features in action.
+
 ### ✅ Chat UI with React
 - Developed a **React-based chat interface** for user interaction.
 

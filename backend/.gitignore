@@ -24,3 +24,7 @@ ENV/
 # Checkpointer temporary files
 **/state.db-shm
 **/state.db-wal
+
+# Kubernetes files
+*.yaml
+*.yml

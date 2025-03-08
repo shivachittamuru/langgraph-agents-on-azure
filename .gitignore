@@ -19,3 +19,7 @@ __pycache__/
 
 # Docker commands
 commands.txt
+
+# Kubernetes files
+*.yaml
+*.yml
