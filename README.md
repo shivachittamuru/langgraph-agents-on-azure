@@ -48,7 +48,7 @@ You can use GitHub Codespaces where we have a pre-configured development environ
 
 ### Use Github Codespaces
 
-If you want to setup your environment on your local workstation, expand the section below and follow the requirements listed.
+If you want to run this code without the need to create a project environment, expand the section below and follow the requirements listed.
 
 <details markdown=1>
 <summary markdown="span">Click to expand/collapse GitHub Codespaces Requirements</summary>
@@ -67,6 +67,8 @@ Your Codespace environment should load in a new browser tab. It will take approx
 **NOTE:** GitHub Codespaces time out after 20 minutes if you are not actively interacting with it in the browser. If your codespace times out, you can restart it and the developer environment and its files will return with its state intact within seconds. If you want to have a better experience, you can also update the default timeout value in your personal setting page on Github. Refer to this page for instructions: [Default-Timeout-Period](https://docs.github.com/en/codespaces/setting-your-user-preferences/setting-your-timeout-period-for-github-codespaces#setting-your-default-timeout-period) 
 
 **NOTE:** Codespaces expire after 30 days unless you extend the expiration date. When a Codespace expires, the state of all files in it will be lost.
+
+</details>
 
 ### Use Local Workstation
 
@@ -96,6 +98,7 @@ source <env-name>/bin/activate  # On macOS/Linux
 <env-name>\Scripts\activate  # On Windows
 pip install -r requirements.txt
 ```
+</details>
 
 ### 🚀 Run the Application
 
