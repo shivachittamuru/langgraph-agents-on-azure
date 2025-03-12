@@ -59,6 +59,11 @@ GitHub Codespaces is available for developers in every organization. All persona
 
 You can see your balance of available codespace hours on the [GitHub billing page](https://github.com/settings/billing/summary).
 
+- Once you are signed in, click on the green "Code" button.
+- Then click the three dots in the "Codespaces" section and select "New with Options...".
+  - We recommend selecting 4-cores for "Machine Type, if possible.
+- Finally, click "Create Codespace".
+
 Your Codespace environment should load in a new browser tab. It will take approximately 3-5 minutes the first time you create the codespace for it to load.
 
 - When the codespace completes loading, you should find an instance of Visual Studio Code running in your browser with the files needed for this project. 
