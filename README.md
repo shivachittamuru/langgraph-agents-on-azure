@@ -39,7 +39,41 @@ This project delivers an **end-to-end production-grade implementation** of a Tex
 - Prepared for **Azure deployment** on **Azure Web App** or **Azure Kubernetes Service (AKS)**.
 
 
-## ⚡ Getting Started
+## ⚡ Setup Development Environment
+
+You can use GitHub Codespaces where we have a pre-configured development environment set up and ready to go for you, or you can setup the developer tools on your local workstation.
+
+- [Use GitHub Codespaces](#use-github-codespaces)
+- [Use Local Workstation](#use-local-workstation)
+
+### Use Github Codespaces
+
+If you want to setup your environment on your local workstation, expand the section below and follow the requirements listed.
+
+<details markdown=1>
+<summary markdown="span">Click to expand/collapse GitHub Codespaces Requirements</summary>
+
+You must have a GitHub account to use GitHub Codespaces. If you do not have a GitHub account, you can [Sign Up Here](https://github.com/signup).
+
+GitHub Codespaces is available for developers in every organization. All personal GitHub.com accounts include a monthly quota of free usage each month. GitHub will provide users in the Free plan 120 core hours, or 60 hours of run time on a 2 core codespace, plus 15 GB of storage each month.
+
+You can see your balance of available codespace hours on the [GitHub billing page](https://github.com/settings/billing/summary).
+
+Your Codespace environment should load in a new browser tab. It will take approximately 3-5 minutes the first time you create the codespace for it to load.
+
+- When the codespace completes loading, you should find an instance of Visual Studio Code running in your browser with the files needed for this project. 
+- Python modules required to run the `/backend` code are pre-installed with the codespace, so you can start coding immediately without the need to set up an environment. This is one of the key benefits of using GitHub Codespaces.
+
+**NOTE:** GitHub Codespaces time out after 20 minutes if you are not actively interacting with it in the browser. If your codespace times out, you can restart it and the developer environment and its files will return with its state intact within seconds. If you want to have a better experience, you can also update the default timeout value in your personal setting page on Github. Refer to this page for instructions: [Default-Timeout-Period](https://docs.github.com/en/codespaces/setting-your-user-preferences/setting-your-timeout-period-for-github-codespaces#setting-your-default-timeout-period) 
+
+**NOTE:** Codespaces expire after 30 days unless you extend the expiration date. When a Codespace expires, the state of all files in it will be lost.
+
+### Use Local Workstation
+
+If you want to setup your environment on your local workstation, expand the section below and follow the requirements listed.
+
+<details markdown=1>
+<summary markdown="span">Click to expand/collapse Local Workstation Requirements</summary>
 
 Clone the repo:
 ```console
@@ -47,7 +81,7 @@ git clone https://github.com/shivachittamuru/langgraph-agents-on-azure.git
 cd langgraph-agents-on-azure
 ```
 
-### Option 1: Using Conda (Recommended)
+#### Option 1: Using Conda (Recommended)
 If you have Anaconda or Miniconda installed, you can set up the environment using Conda:
 ```console
 conda create --name <env-name> python=3.10
@@ -55,7 +89,7 @@ conda activate <env-name>
 pip install -r requirements.txt
 ```
 
-### Option 2: Using Virtualenv
+#### Option 2: Using Virtualenv
 ```console
 python3 -m venv <env-name>
 source <env-name>/bin/activate  # On macOS/Linux
