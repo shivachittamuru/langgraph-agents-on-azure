@@ -1,0 +1,12 @@
+{
+    "Questions": [
+        {
+            "Question": "Can you tell me the names of popular albums in the database?",
+            "GroundTruth": "Koyaanisqatsi (Soundtrack from the Motion Picture), Mozart: Chamber Music, Monteverdi: L'Orfeo, Schubert: The Late String Quartets & String Quintet (3 CDs), Respighi: Pines of Rome, Locatelli: Concertos for Violin, Strings and Continuo, Vol. 3, Great Recordings of the Century - Schubert: Schwanengesang, 4 Lieder, Liszt - 12 Études D'Execution Transcendante, Great Recordings of the Century: Paganini's 24 Caprices, Nielsen: The Six Symphonies"
+        },
+        {
+            "Question": "Find albums released by artists who have more than 5 albums",
+            "GroundTruth": "Deep Purple: Come Taste The Band, Deep Purple In Rock, Fireball, Knocking at Your Back Door: The Best Of Deep Purple in the 80's, MK III The Final Concerts [Disc 1], Machine Head, Purpendicular, Slaves And Masters, Stormbringer, The Battle Rages On, The Final Concerts (Disc 2), Iron Maiden: A Matter of Life and Death, A Real Dead One, A Real Live One, Brave New World, Dance Of Death, Fear Of The Dark, Iron Maiden, Killers, Live After Death, Live At Donington 1992 (Disc 1), Live At Donington 1992 (Disc 2), No Prayer For The Dying, Piece Of Mind, Powerslave, Rock In Rio [CD1], Rock In Rio [CD2], Seventh Son of a Seventh Son, Somewhere in Time, The Number of The Beast, The X Factor, Virtual XI, Led Zeppelin: BBC Sessions [Disc 1] [Live], BBC Sessions [Disc 2] [Live], Coda, Houses Of The Holy, IV, In Through The Out Door, Led Zeppelin I, Led Zeppelin II, Led Zeppelin III, Physical Graffiti [Disc 1], Physical Graffiti [Disc 2], Presence, The Song Remains The Same (Disc 1), The Song Remains The Same (Disc 2), Metallica: ...And Justice For All, Black Album, Garage Inc. (Disc 1), Garage Inc. (Disc 2)"
+        }
+    ]
+}
