@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  title: SQL Agent API
+  description: API for invoking SQL agents and streaming responses.
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8000
+    description: Local development server
+  - url: https://your-production-url.com
+    description: Production server
+paths:
+  /sql-invoke:
+    post:
+      summary: Invoke the SQL agent
+      description: Invoke the SQL agent with user input to generate a query response. Use `thread_id` to persist and continue a multi-turn conversation.
+      operationId: invokeSqlAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: Error message
+  /sql-stream:
+    post:
+      summary: Stream the SQL agent's response
+      description: Stream the agent's response to a user input. Use `thread_id` to persist and continue a multi-turn conversation.
+      operationId: streamSqlAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StreamInput'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Streamed response from the agent.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: Error message
+components:
+  schemas:
+    UserInput:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User input to the agent.
+          example: Find albums released by artists who have more than 5 albums.
+        thread_id:
+          type: string
+          nullable: true
+          description: Thread ID to persist and continue a multi-turn conversation.
+          example: 847c6285-8fc9-4560-a83f-4e6285809260
+    StreamInput:
+      allOf:
+        - $ref: '#/components/schemas/UserInput'
+        - type: object
+          properties:
+            stream_tokens:
+              type: boolean
+              description: Whether to stream LLM tokens to the client.
+              example: true
+    ChatMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [human, ai, tool]
+          description: Role of the message.
+          example: ai
+        content:
+          type: string
+          description: Content of the message.
+          example: Here are the albums released by artists with more than 5 albums.
+        tool_calls:
+          type: array
+          items:
+            type: object
+          description: Tool calls in the message.
+        tool_call_id:
+          type: string
+          nullable: true
+          description: Tool call that this message is responding to.
+          example: call_Jja7J89XsjrOLA5r!MEOW!SL
+        run_id:
+          type: string
+          nullable: true
+          description: Run ID of the message.
+          example: 847c6285-8fc9-4560-a83f-4e6285809254
+        original:
+          type: object
+          description: Original LangChain message in serialized form.
+        additional_kwargs:
+          type: object
+          description: Additional metadata including plotly JSON.

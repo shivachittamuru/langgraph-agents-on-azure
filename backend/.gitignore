@@ -26,5 +26,5 @@ ENV/
 **/state.db-wal
 
 # Kubernetes files
-*.yaml
-*.yml
+deployment.yaml
+service.yaml
