@@ -21,5 +21,8 @@ __pycache__/
 commands.txt
 
 # Kubernetes files
-*.yaml
-*.yml
+deployment.yaml
+service.yaml
+
+# folders
+/vite-chat-ui
