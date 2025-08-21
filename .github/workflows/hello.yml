@@ -1,9 +1,0 @@
-name: Hello
-on: [push]
-jobs:
-  hello:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo "Hello from $GITHUB_REF ($GITHUB_SHA)"
-      - run: echo "This is a test workflow for the LangGraph Agents on Azure project."

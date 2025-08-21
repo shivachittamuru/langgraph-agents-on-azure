@@ -19,11 +19,11 @@ jobs:
       APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
       AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED: ${{ secrets.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }}
       AZURE_SDK_TRACING_IMPLEMENTATION: ${{ secrets.AZURE_SDK_TRACING_IMPLEMENTATION }}
-    #   # Optional Postgres/checkpointer env vars (if used)
-    #   PG_VECTOR_HOST: ${{ secrets.PG_VECTOR_HOST }}
-    #   PG_VECTOR_USER: ${{ secrets.PG_VECTOR_USER }}
-    #   PG_VECTOR_PASSWORD: ${{ secrets.PG_VECTOR_PASSWORD }}
-    #   PGDATABASE: ${{ secrets.PGDATABASE }}
+      # Optional Postgres/checkpointer env vars (if used)
+      PG_VECTOR_HOST: ${{ secrets.PG_VECTOR_HOST }}
+      PG_VECTOR_USER: ${{ secrets.PG_VECTOR_USER }}
+      PG_VECTOR_PASSWORD: ${{ secrets.PG_VECTOR_PASSWORD }}
+      PGDATABASE: ${{ secrets.PGDATABASE }}
 
     steps:
       - name: Checkout
