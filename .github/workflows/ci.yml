@@ -2,9 +2,9 @@ name: CI - Agent evaluations
 
 on:
   push:
-    branches: [ main ]
+    branches: [ shiva-cicd-branch ]
   pull_request:
-    branches: [ main ]
+    branches: [ shiva-cicd-branch ]
 
 jobs:
   build-and-evaluate:
