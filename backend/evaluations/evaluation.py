@@ -3,7 +3,8 @@ import requests
 import uuid
 import json
 
-from azure.ai.evaluation import RelevanceEvaluator, SimilarityEvaluator
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.core.credentials import AzureKeyCredential
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
@@ -31,10 +32,16 @@ def invoke_sql_query(message, thread_id):
         return res.json()["content"]
     except Exception as e:
         print(e)
-        
 
-relevance_eval = RelevanceEvaluator(model_config)
-similarity_eval = SimilarityEvaluator(model_config)
+def check_text(client, text):
+    try:
+        result = client.analyze_text(
+            input_text=text,
+            categories=["Hate", "SelfHarm", "Sexual", "Violence"]
+        )
+        return result
+    except Exception as e:
+        return {"error": str(e)}
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
@@ -47,35 +54,37 @@ with open(file_path_input, 'r', encoding='utf-8') as file:
 # Prepare output structure
 output_data = {"Results": []}
 
+# Declare client
+client = ContentSafetyClient(
+    endpoint=model_config["azure_endpoint"],
+    credential=AzureKeyCredential(model_config["api_key"])
+)
+
 # Process each question
 for item in dataset:
     thread_id = str(uuid.uuid4())  # Generate unique thread ID
 
     # Extract question and ground truth
     question = item["Question"]
-    ground_truth = item["GroundTruth"]
 
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
     # Compute relevance and similarity scores 
-    relevance_score = relevance_eval(response=results, context=ground_truth, query=question)
-    similarity_score = similarity_eval(query=question, response=results, ground_truth=ground_truth)
+    safety_score = check_text(client=client, text=results)
+    safety_score_dict = safety_score.as_dict()
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "GroundTruth": ground_truth,
-        "RelevanceScore": relevance_score["relevance"],
-        "SimilarityScore": similarity_score["similarity"]
+        "SafetyScores": safety_score_dict
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"Relevance Score: {relevance_score}")
-    print(f"Similarity Score: {similarity_score}")
+    print(f"SafetyScores: {safety_score_dict}")
     print("-" * 50)
 
 # Write results to the output JSON file

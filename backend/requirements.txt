@@ -1,6 +1,7 @@
 aiofiles==24.1.0
 aiosqlite==0.20.0
 azure-ai-evaluation
+azure.ai.contentsafety
 azure-core-tracing-opentelemetry==1.0.0b11
 azure-identity==1.20.0
 azure-monitor-opentelemetry-exporter==1.0.0b33
