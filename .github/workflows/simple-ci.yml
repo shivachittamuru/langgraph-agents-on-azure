@@ -1,0 +1,47 @@
+name: Simple CI - Agent evaluations
+
+on:
+  push:
+    branches: [ shiva-cicd-branch ]
+
+jobs:
+  build-and-evaluate:
+    runs-on: ubuntu-latest
+    env:
+      # Azure / OpenAI environment variables - set these in repository secrets
+      AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+      AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+      AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+      AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+      AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED: ${{ secrets.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }}
+      AZURE_SDK_TRACING_IMPLEMENTATION: ${{ secrets.AZURE_SDK_TRACING_IMPLEMENTATION }}
+      # Optional Postgres/checkpointer env vars (if used)
+      PG_VECTOR_HOST: ${{ secrets.PG_VECTOR_HOST }}
+      PG_VECTOR_USER: ${{ secrets.PG_VECTOR_USER }}
+      PG_VECTOR_PASSWORD: ${{ secrets.PG_VECTOR_PASSWORD }}
+      PGDATABASE: ${{ secrets.PGDATABASE }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python deps
+        run: pip install -r backend/requirements.txt
+
+      - name: Start backend
+        run: nohup python backend/main.py > backend/server.log 2>&1 &
+
+      - name: Give backend time to start
+        run: sleep 6
+
+      - name: Run evaluations
+        run: python backend/evaluations/evaluation.py
+
+      - name: Upload evaluation results
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results
+          path: backend/evaluations/data/evaluation_output.json
