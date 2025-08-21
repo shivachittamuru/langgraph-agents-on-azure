@@ -38,7 +38,8 @@ jobs:
         run: sleep 6
 
       - name: Run evaluations
-        run: python backend/evaluations/evaluation.py
+        working-directory: backend/evaluations
+        run: python evaluation.py
 
       - name: Upload evaluation results
         uses: actions/upload-artifact@v4
