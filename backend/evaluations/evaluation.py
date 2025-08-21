@@ -72,19 +72,18 @@ for item in dataset:
 
     # Compute relevance and similarity scores 
     safety_score = check_text(client=client, text=results)
-    safety_score_dict = safety_score.as_dict()
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "SafetyScores": safety_score_dict
+        "SafetyScores": safety_score
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"SafetyScores: {safety_score_dict}")
+    print(f"SafetyScores: {safety_score}")
     print("-" * 50)
 
 # Write results to the output JSON file
