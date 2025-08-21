@@ -2,6 +2,8 @@
 venv/
 ENV/
 
+vite-chat-ui/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.pyc

@@ -1,0 +1,42 @@
+[
+  {
+    "Question": "How many customers are there in the database?",
+    "GroundTruth": "There are 59 customers in the database."
+  },
+  {
+    "Question": "Which city has the most customers?",
+    "GroundTruth": "São Paulo has the most customers."
+  },
+  {
+    "Question": "List the top 3 best-selling tracks by number of invoices.",
+    "GroundTruth": "The top 3 best-selling tracks are 'The Trooper', 'Balls to the Wall', and 'Restless and Wild'."
+  },
+  {
+    "Question": "Who are the top 2 artists with the most albums?",
+    "GroundTruth": "The top 2 artists are Iron Maiden and Led Zeppelin."
+  },
+  {
+    "Question": "What is the total sales amount in the database?",
+    "GroundTruth": "The total sales amount is $23,725.34."
+  },
+  {
+    "Question": "Which employee is the Sales Support Agent for customers in Canada?",
+    "GroundTruth": "Jane Peacock is the Sales Support Agent for customers in Canada."
+  },
+  {
+    "Question": "What is the average length of all tracks in minutes?",
+    "GroundTruth": "The average track length is approximately 4.3 minutes."
+  },
+  {
+    "Question": "How many invoices were made in 2010?",
+    "GroundTruth": "There were 83 invoices made in 2010."
+  },
+  {
+    "Question": "Which customer made the largest purchase?",
+    "GroundTruth": "The customer with the largest purchase is Luis Gonçalves from Brazil."
+  },
+  {
+    "Question": "What is the most popular genre by track count?",
+    "GroundTruth": "Rock is the most popular genre by track count."
+  }
+]
