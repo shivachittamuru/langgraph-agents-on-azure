@@ -1,0 +1,96 @@
+name: CI - Agent evaluations
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-evaluate:
+    name: Run backend agents and evaluations
+    runs-on: ubuntu-latest
+    env:
+      # Azure / OpenAI environment variables - set these in repository secrets
+      AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+      AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+      AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+      AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
+      AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED: ${{ secrets.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }}
+      AZURE_SDK_TRACING_IMPLEMENTATION: ${{ secrets.AZURE_SDK_TRACING_IMPLEMENTATION }}
+    #   # Optional Postgres/checkpointer env vars (if used)
+    #   PG_VECTOR_HOST: ${{ secrets.PG_VECTOR_HOST }}
+    #   PG_VECTOR_USER: ${{ secrets.PG_VECTOR_USER }}
+    #   PG_VECTOR_PASSWORD: ${{ secrets.PG_VECTOR_PASSWORD }}
+    #   PGDATABASE: ${{ secrets.PGDATABASE }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          # Required for building some Python packages (pyodbc, psycopg, etc.)
+          sudo apt-get install -y build-essential unixodbc-dev libpq-dev
+
+      - name: Upgrade pip and install wheel
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r backend/requirements.txt
+
+      - name: Start backend (uvicorn via backend/main.py) in background
+        run: |
+          # Start the FastAPI app (uvicorn) in the background and capture logs
+          nohup python backend/main.py > backend/server.log 2>&1 &
+          echo "UVICORN PID: $!"
+
+          # Wait for the health endpoint to be available
+          for i in {1..30}; do
+            if curl -sSf "http://127.0.0.1:8000/health" >/dev/null 2>&1; then
+              echo "Backend is up"
+              break
+            fi
+            echo "Waiting for backend to become available... ($i/30)"
+            sleep 2
+          done
+
+          # Show a snippet of the server log for debugging
+          echo "==== server.log (tail) ===="
+          tail -n +1 backend/server.log | sed -n '1,200p' || true
+
+      - name: Run evaluations
+        working-directory: backend/evaluations
+        run: |
+          # Run evaluation which posts to the local FastAPI endpoint
+          python evaluation.py
+
+      - name: Upload evaluation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results
+          path: backend/evaluations/data/evaluation_output.json
+
+      - name: Upload server log (for troubleshooting)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-server-log
+          path: backend/server.log
