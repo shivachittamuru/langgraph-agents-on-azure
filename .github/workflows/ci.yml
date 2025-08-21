@@ -56,9 +56,10 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Start backend (uvicorn via backend/main.py) in background
+        working-directory: backend
         run: |
           # Start the FastAPI app (uvicorn) in the background and capture logs
-          nohup python backend/main.py > backend/server.log 2>&1 &
+          nohup python main.py > server.log 2>&1 &
           echo "UVICORN PID: $!"
 
           # Wait for the health endpoint to be available
@@ -73,7 +74,7 @@ jobs:
 
           # Show a snippet of the server log for debugging
           echo "==== server.log (tail) ===="
-          tail -n +1 backend/server.log | sed -n '1,200p' || true
+          tail -n +1 server.log | sed -n '1,200p' || true
 
       - name: Run evaluations
         working-directory: backend/evaluations

@@ -32,7 +32,8 @@ jobs:
         run: pip install -r backend/requirements.txt
 
       - name: Start backend
-        run: nohup python backend/main.py > backend/server.log 2>&1 &
+        working-directory: backend
+        run: nohup python main.py > server.log 2>&1 &
 
       - name: Give backend time to start
         run: sleep 6
