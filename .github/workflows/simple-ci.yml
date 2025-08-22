@@ -2,7 +2,7 @@ name: Simple CI - Agent evaluations
 
 on:
   push:
-    branches: [ shiva-cicd-branch ]
+    branches: [ main ]
 
 jobs:
   build-and-evaluate:
@@ -47,3 +47,5 @@ jobs:
         with:
           name: evaluation-results
           path: backend/evaluations/data/evaluation_output.json
+
+      

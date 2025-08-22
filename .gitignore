@@ -28,3 +28,6 @@ service.yaml
 
 # folders
 /vite-chat-ui
+
+# github actions workflows
+/.github/workflows/cd-dev.yml

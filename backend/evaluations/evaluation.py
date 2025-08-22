@@ -8,8 +8,8 @@ from azure.ai.evaluation import RelevanceEvaluator, SimilarityEvaluator
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
 
-api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
-# api_url = "http://localhost:80"     # Docker container URL since we exposed the port 80
+# api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
+api_url = "http://localhost:80"     # Docker container URL since we exposed the port 80
 # api_url = "https://chinook-backend-api.azurewebsites.net"  # Azure Web App URL
 # api_url = "http://20.118.71.68:80"  # AKS URL
 
