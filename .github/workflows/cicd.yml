@@ -79,6 +79,9 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     needs: build-and-evaluate   # wait for CI to pass
+    permissions:
+      id-token: write   # required for OIDC
+      contents: read    # required for actions/checkout
     steps:
       - uses: actions/checkout@v4
 
