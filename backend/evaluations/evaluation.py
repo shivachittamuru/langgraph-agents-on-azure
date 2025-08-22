@@ -21,6 +21,14 @@ model_config = {
     "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
 }
 
+# Declare client
+client = ContentSafetyClient(
+    endpoint=model_config["azure_endpoint"],
+    credential=AzureKeyCredential(model_config["api_key"])
+)
+print(f"Using endpoint: {model_config['azure_endpoint']}")
+print(f"Using api_key: {model_config['api_key']}")
+
 def invoke_sql_query(message, thread_id):
     try:        
         res = requests.post(f"{api_url}/sql-invoke",
@@ -55,12 +63,6 @@ with open(file_path_input, 'r', encoding='utf-8') as file:
 
 # Prepare output structure
 output_data = {"Results": []}
-
-# Declare client
-client = ContentSafetyClient(
-    endpoint=model_config["azure_endpoint"],
-    credential=AzureKeyCredential(model_config["api_key"])
-)
 
 # Process each question
 for item in dataset:
