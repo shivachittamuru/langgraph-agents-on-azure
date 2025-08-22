@@ -1,14 +1,17 @@
-name: Simple CI - Agent evaluations (Dockerized)
+name: CI/CD - Agent Build and Deploy to Dev
 
 on:
   push:
-    branches: [ main ]
+    branches: [ shiva-cicd-branch ]
 
 jobs:
+  # -----------------
+  # CI: Build & Evaluate
+  # -----------------
   build-and-evaluate:
     runs-on: ubuntu-latest
     env:
-      # Azure / OpenAI environment variables - set these in repository secrets
+      # Azure / OpenAI environment variables
       AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
       AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
       AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
@@ -42,7 +45,7 @@ jobs:
             --env "PG_VECTOR_USER=${PG_VECTOR_USER}" \
             --env "PG_VECTOR_PASSWORD=${PG_VECTOR_PASSWORD}" \
             --env "PGDATABASE=${PGDATABASE}" \
-            "chinook-backend"
+            chinook-backend:latest
 
       - name: Wait for container to be ready
         run: |
@@ -63,8 +66,56 @@ jobs:
         with:
           name: evaluation-results
           path: backend/evaluations/data/evaluation_output.json
+
       - name: Cleanup
         if: always()
         run: |
           docker stop chinook-backend 2>/dev/null || true
           docker rm chinook-backend 2>/dev/null || true
+
+  # -----------------
+  # CD: Deploy to Azure App Service (Dev)
+  # -----------------
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: build-and-evaluate   # wait for CI to pass
+    steps:
+      - uses: actions/checkout@v4
+
+      # Login to Azure
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}       # SP Application ID
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}       # Directory/Tenant ID
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  # store service principal JSON here
+
+      # Login to ACR
+      - name: Azure CLI - ACR Login
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az acr login --name ${{ secrets.ACR_NAME }}
+
+      # Build, Tag, and Push Docker image
+      - name: Build and Push Docker image to ACR
+        run: |
+          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest ./backend
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest
+
+      # Deploy to Azure Web App
+      - name: Deploy Backend to Azure Web App
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az webapp config container set \
+              --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest \
+              --docker-registry-server-url https://${{ secrets.ACR_NAME }}.azurecr.io \
+              --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
+              --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+
+            az webapp restart \
+              --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
+              --resource-group ${{ secrets.RESOURCE_GROUP }}
