@@ -17,10 +17,8 @@ model_config = {
     "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),
     "api_key": os.environ.get("AZURE_OPENAI_API_KEY"),
     "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
+    "azure_ai_project_endpoint": os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
 }
-
-print(f"Using endpoint: {model_config['azure_endpoint']}")
-print(f"Using api_key: {model_config['api_key']}")
 
 def invoke_sql_query(message, thread_id):
     try:        
@@ -35,7 +33,7 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         print(e)
 
-safety_eval = ContentSafetyEvaluator(model_config)
+safety_eval = ContentSafetyEvaluator(model_config["azure_ai_project_endpoint"])
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
