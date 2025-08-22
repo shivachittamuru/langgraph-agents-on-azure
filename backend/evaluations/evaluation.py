@@ -33,7 +33,7 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         print(e)
 
-safety_eval = ContentSafetyEvaluator(model_config["azure_ai_project_endpoint"])
+safety_eval = ContentSafetyEvaluator(azure_ai_project=model_config["azure_ai_project_endpoint"])
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
