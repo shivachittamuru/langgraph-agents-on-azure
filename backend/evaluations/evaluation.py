@@ -4,6 +4,7 @@ import uuid
 import json
 
 from azure.ai.contentsafety import ContentSafetyClient
+from azure.ai.contentsafety.models import AnalyzeTextOptions
 from azure.core.credentials import AzureKeyCredential
 
 from dotenv import load_dotenv, find_dotenv
@@ -35,10 +36,11 @@ def invoke_sql_query(message, thread_id):
 
 def check_text(client, text):
     try:
-        result = client.analyze_text(
-            input_text=text,
+        options = AnalyzeTextOptions(
+            text=text,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
+        result = client.analyze_text(options)
         return result
     except Exception as e:
         return {"error": str(e)}
