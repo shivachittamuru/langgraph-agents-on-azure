@@ -3,9 +3,7 @@ import requests
 import uuid
 import json
 
-from azure.ai.contentsafety import ContentSafetyClient
-from azure.ai.contentsafety.models import AnalyzeTextOptions
-from azure.core.credentials import AzureKeyCredential
+from azure.ai.evaluation import ContentSafetyEvaluator
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
@@ -21,11 +19,6 @@ model_config = {
     "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
 }
 
-# Declare client
-client = ContentSafetyClient(
-    endpoint=model_config["azure_endpoint"],
-    credential=AzureKeyCredential(model_config["api_key"])
-)
 print(f"Using endpoint: {model_config['azure_endpoint']}")
 print(f"Using api_key: {model_config['api_key']}")
 
@@ -42,16 +35,7 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         print(e)
 
-def check_text(client, text):
-    try:
-        options = AnalyzeTextOptions(
-            text=text,
-            categories=["Hate", "SelfHarm", "Sexual", "Violence"]
-        )
-        result = client.analyze_text(options)
-        return result
-    except Exception as e:
-        return {"error": str(e)}
+safety_eval = ContentSafetyEvaluator(model_config)
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
@@ -75,19 +59,19 @@ for item in dataset:
     results = invoke_sql_query(question, thread_id)
 
     # Compute relevance and similarity scores 
-    safety_score = check_text(client=client, text=results)
+    safety_scores = safety_eval(query=results)
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "SafetyScores": safety_score
+        "SafetyScores": safety_scores
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"SafetyScores: {safety_score}")
+    print(f"SafetyScores: {safety_scores}")
     print("-" * 50)
 
 # Write results to the output JSON file
