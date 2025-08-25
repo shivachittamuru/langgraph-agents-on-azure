@@ -15,6 +15,7 @@ api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
 # api_url = "https://chinook-backend-api.azurewebsites.net"  # Azure Web App URL
 # api_url = "http://20.118.71.68:80"  # AKS URL
 
+endpoint = os.environ.get("AZURE_CONTENT_SAFETY_ENDPOINT")
 key = os.environ.get("AZURE_CONTENT_SAFETY_KEY")
 
 def invoke_sql_query(message, thread_id):
@@ -31,7 +32,7 @@ def invoke_sql_query(message, thread_id):
         print(e)
 
 client = ContentSafetyClient(
-    endpoint="https://my-contentsafety-resource.cognitiveservices.azure.com/",
+    endpoint=endpoint,
     credential=AzureKeyCredential(key) 
 )
 
