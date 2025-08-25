@@ -1,8 +1,14 @@
 name: Azure Login
 
+
 on:
   push:
     branches: [ shiva-cicd-branch ]
+
+# Required for OIDC-based Azure login
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   login:
