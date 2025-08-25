@@ -108,6 +108,35 @@ jobs:
           docker push ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest
 
       # Deploy to Azure Web App
+      - name: Ensure App Service Plan exists
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            if ! az appservice plan show --name ${{ secrets.APP_SERVICE_PLAN }} --resource-group ${{ secrets.RESOURCE_GROUP }} &>/dev/null; then
+              az appservice plan create \
+                --name ${{ secrets.APP_SERVICE_PLAN }} \
+                --resource-group ${{ secrets.RESOURCE_GROUP }} \
+                --location ${{ secrets.AZURE_LOCATION }} \
+                --sku B1 \
+                --is-linux
+            else
+              echo "App Service Plan already exists."
+            fi
+
+      - name: Ensure Web App exists
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            if ! az webapp show --name ${{ secrets.BACKEND_WEBAPP_NAME }} --resource-group ${{ secrets.RESOURCE_GROUP }} &>/dev/null; then
+              az webapp create \
+                --resource-group ${{ secrets.RESOURCE_GROUP }} \
+                --plan ${{ secrets.APP_SERVICE_PLAN }} \
+                --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
+                --deployment-container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest
+            else
+              echo "Web App already exists."
+            fi
+
       - name: Deploy Backend to Azure Web App
         uses: azure/cli@v2
         with:
@@ -115,11 +144,15 @@ jobs:
             az webapp config container set \
               --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }} \
-              --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest \
-              --docker-registry-server-url https://${{ secrets.ACR_NAME }}.azurecr.io \
-              --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
-              --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
-
+              --container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest \
+              --container-registry-url https://${{ secrets.ACR_NAME }}.azurecr.io \
+              --container-registry-user ${{ secrets.ACR_USERNAME }} \
+              --container-registry-password ${{ secrets.ACR_PASSWORD }}
+        
+      - name: Restart Azure Web App
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
             az webapp restart \
               --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }}
