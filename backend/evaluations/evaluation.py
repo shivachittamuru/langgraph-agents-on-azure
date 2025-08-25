@@ -45,7 +45,7 @@ def invoke_sql_query(message, thread_id):
             inner = ast.literal_eval(detail_str)
 
             # Finally grab the content_filter_result
-            content_filter_result = inner["error"]["innererror"]["content_filter_result"]
+            content_filter_result = inner["error"]["innererror"]
             print(content_filter_result)
             return content_filter_result
 
