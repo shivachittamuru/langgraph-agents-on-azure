@@ -3,7 +3,9 @@ import requests
 import uuid
 import json
 
-from azure.ai.evaluation import ContentSafetyEvaluator
+from azure.ai.contentsafety import ContentSafetyClient
+from azure.ai.contentsafety.models import AnalyzeTextOptions
+from azure.core.credentials import AzureKeyCredential
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
@@ -14,10 +16,8 @@ api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
 # api_url = "http://20.118.71.68:80"  # AKS URL
 
 model_config = {
-    "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),
-    "api_key": os.environ.get("AZURE_OPENAI_API_KEY"),
-    "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
-    "azure_ai_project_endpoint": os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
+    "azure_content_safety_endpoint": os.environ.get("AZURE_CONTENT_SAFETY_ENDPOINT"),
+    "azure_content_safety_key": os.environ.get("AZURE_CONTENT_SAFETY_KEY"),
 }
 
 def invoke_sql_query(message, thread_id):
@@ -33,7 +33,10 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         print(e)
 
-safety_eval = ContentSafetyEvaluator(azure_ai_project=model_config["azure_ai_project_endpoint"])
+client = ContentSafetyClient(
+    endpoint=model_config["azure_content_safety_endpoint"],
+    credential=AzureKeyCredential(model_config["azure_content_safety_key"])
+)
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
@@ -56,8 +59,12 @@ for item in dataset:
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
-    # Compute relevance and similarity scores 
-    safety_scores = safety_eval(query=results)
+    # Compute safety scores 
+    options = AnalyzeTextOptions(
+        text=results,
+        categories=["Hate", "SelfHarm", "Sexual", "Violence"]
+    )
+    safety_scores = client.analyze_text(options)
 
     # Store results
     output_data["Results"].append({
