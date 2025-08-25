@@ -2,6 +2,7 @@ import os
 import requests
 import uuid
 import json
+import ast
 
 from azure.ai.contentsafety import ContentSafetyClient
 from azure.ai.contentsafety.models import AnalyzeTextOptions
@@ -31,6 +32,10 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         # print("Exception thrown")
         # print(e)
+        if " - " in e:
+            json_part = e.split(" - ", 1)[1]  # take everything after " - "
+            error_json = ast.literal_eval(json_part)  # safe dict conversion
+            return error_json
         return e
 
 client = ContentSafetyClient(
