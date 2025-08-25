@@ -32,11 +32,22 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         # print("Exception thrown")
         # print(e)
-        e_str = e["detail"]
-        if " - " in e_str:
-            json_part = e_str.split(" - ", 1)[1]  # take everything after " - "
-            error_json = ast.literal_eval(json_part)  # safe dict conversion
-            return error_json
+        error_str = str(e)
+
+        if "content_filter_result" in error_str:
+            # Convert the outer string into a Python dict
+            outer = ast.literal_eval(error_str)
+
+            # Extract the inner "Error code: 400 - {...}" part
+            detail_str = outer["detail"].split("Error code: 400 - ", 1)[1]
+
+            # Parse the inner dict
+            inner = ast.literal_eval(detail_str)
+
+            # Finally grab the content_filter_result
+            content_filter_result = inner["error"]["innererror"]["content_filter_result"]
+            print(content_filter_result)
+            return content_filter_result
 
 client = ContentSafetyClient(
     endpoint=endpoint,
