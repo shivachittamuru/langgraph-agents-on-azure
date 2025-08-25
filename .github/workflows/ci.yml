@@ -10,6 +10,7 @@ jobs:
   build-and-evaluate:
     name: Run backend agents and evaluations
     runs-on: ubuntu-latest
+    environment: ActionsEnv 
     env:
       # Azure / OpenAI environment variables - set these in repository secrets
       AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
