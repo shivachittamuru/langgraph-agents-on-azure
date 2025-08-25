@@ -28,26 +28,15 @@ def invoke_sql_query(message, thread_id):
             }
         )
         # print(res.json())
-        return res.json()["content"]
+        return res.json()
     except Exception as e:
         # print("Exception thrown")
         # print(e)
-        error_str = str(e)
-
-        if "content_filter_result" in error_str:
-            # Convert the outer string into a Python dict
-            outer = ast.literal_eval(error_str)
-
-            # Extract the inner "Error code: 400 - {...}" part
-            detail_str = outer["detail"].split("Error code: 400 - ", 1)[1]
-
-            # Parse the inner dict
-            inner = ast.literal_eval(detail_str)
-
-            # Finally grab the content_filter_result
-            content_filter_result = inner["error"]["innererror"]
-            print(content_filter_result)
-            return content_filter_result
+        e_str = str(e)
+        if " - " in e_str:
+            json_part = e_str.split(" - ", 1)[1]  # take everything after " - "
+            error_json = ast.literal_eval(json_part)  # safe dict conversion
+            return error_json
 
 client = ContentSafetyClient(
     endpoint=endpoint,
@@ -78,13 +67,16 @@ for item in dataset:
     # Get safety scores 
     if results.get("content_filter_result"):
         safety_scores = results["content_filter_result"]
-    else:
+    elif results.get("content"):
+        results = results["content"]
         options = AnalyzeTextOptions(
             text=results,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
         result = client.analyze_text(options)
         safety_scores = result.as_dict()
+    else:
+        safety_scores = "undefined"
 
     # Store results
     output_data["Results"].append({
