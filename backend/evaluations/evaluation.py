@@ -26,7 +26,7 @@ def invoke_sql_query(message, thread_id):
                 "thread_id": thread_id
             }
         )
-        print(res.json()["content"])
+        print(res.json())
         return res.json()["content"]
     except Exception as e:
         print(e)
