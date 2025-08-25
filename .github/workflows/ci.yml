@@ -31,6 +31,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug Connection String
+        run: echo "${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}"
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
