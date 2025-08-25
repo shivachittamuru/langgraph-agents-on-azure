@@ -2,7 +2,7 @@ name: CI/CD - Agent Build and Deploy to Dev
 
 on:
   push:
-    branches: [ shiva-cicd-branch ]
+    branches: [ main ]
 
 jobs:
   # -----------------
@@ -86,12 +86,14 @@ jobs:
       - uses: actions/checkout@v4
 
       # Login to Azure
+      # Ensure your service principal has a federated identity credential configured for OIDC authentication.
+      # See: https://learn.microsoft.com/en-us/azure/active-directory/develop/workload-identity-federation-create-trust-github?tabs=azure-cli
       - name: Azure login
         uses: azure/login@v1
         with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}       # SP Application ID
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}       # Directory/Tenant ID
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  # store service principal JSON here
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}       # SP Application ID
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}       # Directory/Tenant ID
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  # Subscription ID
 
       # Login to ACR
       - name: Azure CLI - ACR Login

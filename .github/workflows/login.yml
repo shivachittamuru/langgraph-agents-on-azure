@@ -1,0 +1,19 @@
+name: Azure Login
+
+on:
+  push:
+    branches: [ shiva-cicd-branch ]
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}       # SP Application ID
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}       # Directory/Tenant ID
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  # Subscription ID
