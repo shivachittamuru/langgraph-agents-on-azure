@@ -58,37 +58,45 @@ output_data = {"Results": []}
 for item in dataset:
     thread_id = str(uuid.uuid4())  # Generate unique thread ID
 
-    # Extract question and ground truth
+    # Extract question and safety score
     question = item["Question"]
+    options = AnalyzeTextOptions(
+        text=question,
+        categories=["Hate", "SelfHarm", "Sexual", "Violence"]
+    )
+    analyze_text_result = client.analyze_text(options)
+    input_safety_score = analyze_text_result.as_dict()
 
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
-    # Get safety scores 
+    # Get output safety scores 
     if results.get("content_filter_result"):
-        safety_scores = results["content_filter_result"]
+        output_safety_score = results["content_filter_result"]
     elif results.get("content"):
         results = results["content"]
         options = AnalyzeTextOptions(
             text=results,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
-        result = client.analyze_text(options)
-        safety_scores = result.as_dict()
+        analyze_text_result = client.analyze_text(options)
+        output_safety_score = analyze_text_result.as_dict()
     else:
-        safety_scores = "undefined"
+        output_safety_score = "undefined"
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "SafetyScores": safety_scores
+        "InputSafetyScores": input_safety_score,
+        "OutputSafetyScores": output_safety_score
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"SafetyScores: {safety_scores}")
+    print(f"InputSafetyScores: {input_safety_score}")
+    print(f"OutputSafetyScores: {output_safety_score}")
     print("-" * 50)
 
 # Write results to the output JSON file
