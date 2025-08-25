@@ -32,7 +32,7 @@ def invoke_sql_query(message, thread_id):
 
 client = ContentSafetyClient(
     endpoint="https://my-contentsafety-resource.cognitiveservices.azure.com/",
-    credential=AzureKeyCredential(key)
+    credential=AzureKeyCredential(key) 
 )
 
 # Define the input and output file paths
