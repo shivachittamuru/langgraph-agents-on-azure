@@ -29,7 +29,9 @@ def invoke_sql_query(message, thread_id):
         print(res.json())
         return res.json()
     except Exception as e:
+        print("Exception thrown")
         print(e)
+        return e
 
 client = ContentSafetyClient(
     endpoint=endpoint,
@@ -61,8 +63,9 @@ for item in dataset:
     if results.get("content_filter_result"):
         safety_scores = results["content_filter_result"]
     elif results.get("content"):
+        text = results["content"]
         options = AnalyzeTextOptions(
-            text=results,
+            text=text,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
         safety_scores = client.analyze_text(options)
