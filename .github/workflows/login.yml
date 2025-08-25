@@ -3,7 +3,7 @@ name: Azure Login
 
 on:
   push:
-    branches: [ shiva-cicd-branch ]
+    branches: [ main ]
 
 # Required for OIDC-based Azure login
 permissions:
