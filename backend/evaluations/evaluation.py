@@ -27,7 +27,7 @@ def invoke_sql_query(message, thread_id):
             }
         )
         print(res.json())
-        return res.json()["content"]
+        return res.json()
     except Exception as e:
         print(e)
 
@@ -57,12 +57,17 @@ for item in dataset:
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
-    # Compute safety scores 
-    options = AnalyzeTextOptions(
-        text=results,
-        categories=["Hate", "SelfHarm", "Sexual", "Violence"]
-    )
-    safety_scores = client.analyze_text(options)
+    # Get safety scores 
+    if results.get("content_filter_result"):
+        safety_scores = results["content_filter_result"]
+    elif results.get("content"):
+        options = AnalyzeTextOptions(
+            text=results,
+            categories=["Hate", "SelfHarm", "Sexual", "Violence"]
+        )
+        safety_scores = client.analyze_text(options)
+    else:
+        safety_scores = "undefined"
 
     # Store results
     output_data["Results"].append({
