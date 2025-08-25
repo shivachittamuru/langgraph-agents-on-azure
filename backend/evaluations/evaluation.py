@@ -28,11 +28,11 @@ def invoke_sql_query(message, thread_id):
             }
         )
         # print(res.json())
-        return res.json()
+        return res.json()["content"]
     except Exception as e:
         # print("Exception thrown")
         # print(e)
-        e_str = str(e)
+        e_str = e["detail"]
         if " - " in e_str:
             json_part = e_str.split(" - ", 1)[1]  # take everything after " - "
             error_json = ast.literal_eval(json_part)  # safe dict conversion
@@ -67,16 +67,13 @@ for item in dataset:
     # Get safety scores 
     if results.get("content_filter_result"):
         safety_scores = results["content_filter_result"]
-    elif results.get("content"):
-        text = results["content"]
+    else:
         options = AnalyzeTextOptions(
-            text=text,
+            text=results,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
         result = client.analyze_text(options)
         safety_scores = result.as_dict()
-    else:
-        safety_scores = "undefined"
 
     # Store results
     output_data["Results"].append({
