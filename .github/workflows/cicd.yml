@@ -95,12 +95,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}       # Directory/Tenant ID
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  # Subscription ID
 
-      # Login to ACR
-      - name: Azure CLI - ACR Login
-        uses: azure/cli@v2
-        with:
-          inlineScript: |
-            az acr login --name ${{ secrets.ACR_NAME }}
+      # Login to ACR using access token (no Docker dependency in az cli)
+      - name: Docker Login to ACR
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }} --expose-token --output tsv --query accessToken > acr_token.txt
+          docker login ${{ secrets.ACR_NAME }}.azurecr.io --username 00000000-0000-0000-0000-000000000000 --password $(cat acr_token.txt)
 
       # Build, Tag, and Push Docker image
       - name: Build and Push Docker image to ACR
