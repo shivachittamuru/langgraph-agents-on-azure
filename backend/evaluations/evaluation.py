@@ -26,11 +26,11 @@ def invoke_sql_query(message, thread_id):
                 "thread_id": thread_id
             }
         )
-        print(res.json())
+        # print(res.json())
         return res.json()
     except Exception as e:
-        print("Exception thrown")
-        print(e)
+        # print("Exception thrown")
+        # print(e)
         return e
 
 client = ContentSafetyClient(
@@ -68,7 +68,8 @@ for item in dataset:
             text=text,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
-        safety_scores = client.analyze_text(options)
+        result = client.analyze_text(options)
+        safety_scores = result.as_dict()
     else:
         safety_scores = "undefined"
 
