@@ -32,11 +32,11 @@ def invoke_sql_query(message, thread_id):
     except Exception as e:
         # print("Exception thrown")
         # print(e)
-        if " - " in e:
-            json_part = e.split(" - ", 1)[1]  # take everything after " - "
+        e_str = str(e)
+        if " - " in e_str:
+            json_part = e_str.split(" - ", 1)[1]  # take everything after " - "
             error_json = ast.literal_eval(json_part)  # safe dict conversion
             return error_json
-        return e
 
 client = ContentSafetyClient(
     endpoint=endpoint,
