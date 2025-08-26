@@ -30,13 +30,21 @@ def invoke_sql_query(message, thread_id):
         # print(res.json())
         return res.json()
     except Exception as e:
-        # print("Exception thrown")
-        # print(e)
-        e_str = str(e)
-        if " - " in e_str:
-            json_part = e_str.split(" - ", 1)[1]  # take everything after " - "
-            error_json = ast.literal_eval(json_part)  # safe dict conversion
-            return error_json
+
+        if e.status_code == 400:
+                print(f"400 Bad Request Error: {e.message}")
+                try:
+                    error_details = e.response.json()
+                    print("error details json")
+                    print(error_details)
+                    if "error" in error_details:
+                        inner_error = error_details.get("error", {}).get("innererror", {})
+                        print(f"Inner Error: {inner_error}")
+                        return inner_error
+                except Exception:
+                    print("Could not parse detailed error from response.")
+        else:
+            print(f"An unexpected API error occurred: {e.status_code} - {e.message}")
 
 client = ContentSafetyClient(
     endpoint=endpoint,
