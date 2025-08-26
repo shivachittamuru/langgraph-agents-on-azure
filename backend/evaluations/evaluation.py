@@ -77,7 +77,7 @@ for item in dataset:
     input_safety_score = analyze_text_result.as_dict()
 
     new_prompt = """
-        If the API call fails, return a JSON object with this format:
+        If the API call fails because of a safety filter error, return a JSON object with this format:
 
         {
         "status": "error",
@@ -94,6 +94,7 @@ for item in dataset:
     """ + question
 
     # Call the function to get a response 
+    print(new_prompt)
     results = invoke_sql_query(new_prompt, thread_id)
 
     # Get output safety scores 
