@@ -90,7 +90,7 @@ for item in dataset:
         output_safety_score = analyze_text_result.as_dict()
     else:
         options = AnalyzeTextOptions(
-            text=results,
+            text=str(results),
             categories=["Hate", "SelfHarm", "Sexual", "Violence"]
         )
         analyze_text_result = client.analyze_text(options)
