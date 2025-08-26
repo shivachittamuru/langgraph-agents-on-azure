@@ -9,9 +9,9 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
 
 # api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
-api_url = "http://localhost:80"     # Docker container URL since we exposed the port 80
+# api_url = "http://localhost:80"     # Docker container URL since we exposed the port 80
 # api_url = "https://chinook-backend-api.azurewebsites.net"  # Azure Web App URL
-# api_url = "http://20.118.71.68:80"  # AKS URL
+api_url = "http://52.248.105.188:80"   # AKS URL
 
 model_config = {
     "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),

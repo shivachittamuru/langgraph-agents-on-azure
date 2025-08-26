@@ -2,10 +2,10 @@
     "Results": [
         {
             "Question": "Which artist has generated the highest total sales revenue, and how much is it?",
-            "Answer": "The artist with the highest total sales revenue is Iron Maiden, with a total revenue of approximately $138.60.",
+            "Answer": "The artist with the highest total sales revenue is Iron Maiden, with a total revenue of approximately $1233.54.",
             "GroundTruth": "The artist with the highest total sales revenue is Iron Maiden, with total sales of $138.6.",
             "RelevanceScore": 2.0,
-            "SimilarityScore": 5.0
+            "SimilarityScore": 3.0
         },
         {
             "Question": "For each customer, who spent the most in 2010, and what was the amount?",
@@ -26,7 +26,7 @@
             "Answer": "The country that generated the highest total invoice revenue is the USA, with a total revenue of 523.06.",
             "GroundTruth": "The country with the highest total invoice revenue is the USA, with $523.06 in total sales.",
             "RelevanceScore": 4.0,
-            "SimilarityScore": 5.0
+            "SimilarityScore": 4.0
         },
         {
             "Question": "What are the top 3 most popular genres in terms of the number of tracks purchased across all invoices?",

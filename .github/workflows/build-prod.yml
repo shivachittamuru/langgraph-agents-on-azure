@@ -2,7 +2,7 @@ name: CI/CD - Agent Build and Deploy to Dev
 
 on:
   push:
-    branches: [ shiva-cicd-branch ]
+    branches: [ main ]
 
 jobs:
   # -----------------
