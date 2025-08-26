@@ -132,7 +132,7 @@ jobs:
                 --resource-group ${{ secrets.RESOURCE_GROUP }} \
                 --plan ${{ secrets.APP_SERVICE_PLAN }} \
                 --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
-                --deployment-container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest
+                --container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/chinook-backend:latest
             else
               echo "Web App already exists."
             fi
