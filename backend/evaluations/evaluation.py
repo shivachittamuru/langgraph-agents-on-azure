@@ -74,15 +74,32 @@ for item in dataset:
     analyze_text_result = client.analyze_text(options)
     input_safety_score = analyze_text_result.as_dict()
 
+    new_prompt = """
+        If the API call fails, return a JSON object with this format:
+
+        {
+        "status": "error",
+        "code": "<HTTP or internal error code>",
+        "message": "<error message>",
+        "content_filter_result": {
+            "hate": {"filtered": false, "severity": "safe"},
+            "self_harm": {"filtered": false, "severity": "safe"},
+            "sexual": {"filtered": false, "severity": "safe"},
+            "violence": {"filtered": false, "severity": "safe"}
+        }
+
+        If there is no error, return the normal response you would typically return.
+    """ + question
+
     # Call the function to get a response 
-    results = invoke_sql_query(question, thread_id)
+    results = invoke_sql_query(new_prompt, thread_id)
     print("results")
     print(results)
 
     # Get output safety scores 
-    if hasattr(results, 'prompt_filter_results'):
-        output_safety_score = results.prompt_filter_results
-    elif results.get("content"):
+    if results.get("content_filter_result"):
+        output_safety_score = results.get("content_filter_result", {})
+    if results.get("content"):
         results = results["content"]
         options = AnalyzeTextOptions(
             text=results,
