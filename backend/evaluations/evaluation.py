@@ -30,7 +30,6 @@ def invoke_sql_query(message, thread_id):
         # print(res.json())
         return res.json()
     except Exception as e:
-
         if e.status_code == 400:
                 print(f"400 Bad Request Error: {e.message}")
                 try:
@@ -77,10 +76,12 @@ for item in dataset:
 
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
+    print("results")
+    print(results)
 
     # Get output safety scores 
-    if results.get("content_filter_result"):
-        output_safety_score = results["content_filter_result"]
+    if hasattr(results, 'prompt_filter_results'):
+        output_safety_score = results.prompt_filter_results
     elif results.get("content"):
         results = results["content"]
         options = AnalyzeTextOptions(
@@ -90,7 +91,7 @@ for item in dataset:
         analyze_text_result = client.analyze_text(options)
         output_safety_score = analyze_text_result.as_dict()
     else:
-        output_safety_score = "undefined"
+        output_safety_score = results["content_filter_result"]
 
     # Store results
     output_data["Results"].append({
