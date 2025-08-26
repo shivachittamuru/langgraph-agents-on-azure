@@ -126,12 +126,9 @@ jobs:
 
       # Get AKS credentials
       - name: Get AKS credentials
-        uses: azure/cli@v2
-        with:
-          inlineScript: |
-            az aks get-credentials --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }} --overwrite-existing
-
-      # Create namespace if not exists
+        run: az aks get-credentials --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }} --overwrite-existing
+      
+        # Create namespace if not exists
       - name: Create chinook namespace
         run: |
           kubectl get namespace chinook || kubectl create namespace chinook
