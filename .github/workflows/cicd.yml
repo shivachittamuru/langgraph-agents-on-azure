@@ -148,6 +148,24 @@ jobs:
               --container-registry-url https://${{ secrets.ACR_NAME }}.azurecr.io \
               --container-registry-user ${{ secrets.ACR_USERNAME }} \
               --container-registry-password ${{ secrets.ACR_PASSWORD }}
+
+            az webapp config appsettings set \
+              --name ${{ secrets.BACKEND_WEBAPP_NAME }} \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --settings \
+                AZURE_OPENAI_DEPLOYMENT_NAME=${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }} \
+                AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }} \
+                AZURE_OPENAI_ENDPOINT=${{ secrets.AZURE_OPENAI_ENDPOINT }} \
+                AZURE_OPENAI_API_VERSION=${{ secrets.AZURE_OPENAI_API_VERSION }} \
+                APPLICATIONINSIGHTS_CONNECTION_STRING="${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}" \
+                AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED=${{ secrets.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }} \
+                AZURE_SDK_TRACING_IMPLEMENTATION=${{ secrets.AZURE_SDK_TRACING_IMPLEMENTATION }} \
+                PG_VECTOR_HOST=${{ secrets.PG_VECTOR_HOST }} \
+                PG_VECTOR_USER=${{ secrets.PG_VECTOR_USER }} \
+                PGPORT=${{ secrets.PGPORT }} \
+                PGDATABASE=${{ secrets.PGDATABASE }} \
+                PG_VECTOR_PASSWORD="${{ secrets.PG_VECTOR_PASSWORD }}"
+
         
       - name: Restart Azure Web App
         uses: azure/cli@v2
