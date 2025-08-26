@@ -2,10 +2,10 @@
     "Results": [
         {
             "Question": "Which artist has generated the highest total sales revenue, and how much is it?",
-            "Answer": "The artist with the highest total sales revenue is Iron Maiden, with a total revenue of 1233.54.",
+            "Answer": "The artist with the highest total sales revenue is Iron Maiden, with a total revenue of approximately $138.60.",
             "GroundTruth": "The artist with the highest total sales revenue is Iron Maiden, with total sales of $138.6.",
-            "RelevanceScore": 3.0,
-            "SimilarityScore": 3.0
+            "RelevanceScore": 2.0,
+            "SimilarityScore": 5.0
         },
         {
             "Question": "For each customer, who spent the most in 2010, and what was the amount?",
