@@ -35,7 +35,7 @@ def invoke_sql_query(message, thread_id):
         return res.json()
     except Exception as e:
         print(f"Exception: {e}")
-        return str(e)
+        return e
 
 # Define the input and output file paths
 file_path_input = './data/safety_evaluation_input.json'
@@ -75,7 +75,7 @@ for item in dataset:
         output_safety_score = analyze_text_result.as_dict()
     else:
         options = AnalyzeTextOptions(
-            text=results,
+            text=str(results),
             categories=["Hate", "SelfHarm", "Sexual", "Violence"],
             output_type=AnalyzeTextOutputType("EightSeverityLevels")
         )
