@@ -37,6 +37,21 @@ def invoke_sql_query(message, thread_id):
         print(f"Exception: {e}")
         return e
 
+# Check for prompt injection
+def check_prompt_injection(prompt: str, documents=None):
+    url = f"{endpoint}/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview"
+    headers = {
+        "Ocp-Apim-Subscription-Key": key,
+        "Content-Type": "application/json"
+    }
+    payload = {"userPrompt": prompt}
+    if documents:
+        payload["documents"] = documents
+
+    resp = requests.post(url, headers=headers, json=payload)
+    resp.raise_for_status()
+    return resp.json()
+
 # Define the input and output file paths
 file_path_input = './data/safety_evaluation_input.json'
 file_path_output = './data/safety_evaluation_output.json'
@@ -60,6 +75,7 @@ for item in dataset:
     )
     analyze_text_result = client.analyze_text(options)
     input_safety_score = analyze_text_result.as_dict()
+    prompt_injection_score = check_prompt_injection(question)
 
     # Call the agent and get a response 
     results = invoke_sql_query(question, thread_id)
@@ -86,13 +102,15 @@ for item in dataset:
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
+        "InputPromptInjectionScore": prompt_injection_score,
         "InputSafetyScores": input_safety_score,
-        "OutputSafetyScores": output_safety_score
+        "OutputSafetyScores": output_safety_score,
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
+    print(f"InputPromptInjectionScore: {prompt_injection_score}")
     print(f"InputSafetyScores: {input_safety_score}")
     print(f"OutputSafetyScores: {output_safety_score}")
     print("-" * 50)
