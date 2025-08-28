@@ -2,11 +2,8 @@ import os
 import requests
 import uuid
 import json
-import ast
 
-from azure.ai.contentsafety import ContentSafetyClient
-from azure.ai.contentsafety.models import AnalyzeTextOptions
-from azure.core.credentials import AzureKeyCredential
+from azure.ai.evaluation import RelevanceEvaluator, SimilarityEvaluator
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
@@ -16,8 +13,11 @@ api_url = "http://localhost:8000"   # FastAPI uvicorn URL with port 8000
 # api_url = "https://chinook-backend-api.azurewebsites.net"  # Azure Web App URL
 # api_url = "http://20.118.71.68:80"  # AKS URL
 
-endpoint = os.environ.get("AZURE_CONTENT_SAFETY_ENDPOINT")
-key = os.environ.get("AZURE_CONTENT_SAFETY_KEY")
+model_config = {
+    "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),
+    "api_key": os.environ.get("AZURE_OPENAI_API_KEY"),
+    "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
+}
 
 def invoke_sql_query(message, thread_id):
     try:        
@@ -27,30 +27,14 @@ def invoke_sql_query(message, thread_id):
                 "thread_id": thread_id
             }
         )
-        print("successful result")
-        print(res.json())
-        return res.json()
+        print(res.json()["content"])
+        return res.json()["content"]
     except Exception as e:
-        print("successful result")
-        if e.status_code == 400:
-                print(f"400 Bad Request Error: {e.message}")
-                try:
-                    error_details = e.response.json()
-                    print("error details json")
-                    print(error_details)
-                    if "error" in error_details:
-                        inner_error = error_details.get("error", {}).get("innererror", {})
-                        print(f"Inner Error: {inner_error}")
-                        return inner_error
-                except Exception:
-                    print("Could not parse detailed error from response.")
-        else:
-            print(f"An unexpected API error occurred: {e.status_code} - {e.message}")
+        print(e)
+        
 
-client = ContentSafetyClient(
-    endpoint=endpoint,
-    credential=AzureKeyCredential(key) 
-)
+relevance_eval = RelevanceEvaluator(model_config)
+similarity_eval = SimilarityEvaluator(model_config)
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
@@ -67,48 +51,31 @@ output_data = {"Results": []}
 for item in dataset:
     thread_id = str(uuid.uuid4())  # Generate unique thread ID
 
-    # Extract question and safety score
+    # Extract question and ground truth
     question = item["Question"]
-    options = AnalyzeTextOptions(
-        text=question,
-        categories=["Hate", "SelfHarm", "Sexual", "Violence"]
-    )
-    analyze_text_result = client.analyze_text(options)
-    input_safety_score = analyze_text_result.as_dict()
+    ground_truth = item["GroundTruth"]
 
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
-    # Get output safety scores 
-    if results.get("content"):
-        results = results["content"]
-        options = AnalyzeTextOptions(
-            text=results,
-            categories=["Hate", "SelfHarm", "Sexual", "Violence"]
-        )
-        analyze_text_result = client.analyze_text(options)
-        output_safety_score = analyze_text_result.as_dict()
-    else:
-        options = AnalyzeTextOptions(
-            text=str(results),
-            categories=["Hate", "SelfHarm", "Sexual", "Violence"]
-        )
-        analyze_text_result = client.analyze_text(options)
-        output_safety_score = analyze_text_result.as_dict()
+    # Compute relevance and similarity scores 
+    relevance_score = relevance_eval(response=results, context=ground_truth, query=question)
+    similarity_score = similarity_eval(query=question, response=results, ground_truth=ground_truth)
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "InputSafetyScores": input_safety_score,
-        "OutputSafetyScores": output_safety_score
+        "GroundTruth": ground_truth,
+        "RelevanceScore": relevance_score["relevance"],
+        "SimilarityScore": similarity_score["similarity"]
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"InputSafetyScores: {input_safety_score}")
-    print(f"OutputSafetyScores: {output_safety_score}")
+    print(f"Relevance Score: {relevance_score}")
+    print(f"Similarity Score: {similarity_score}")
     print("-" * 50)
 
 # Write results to the output JSON file

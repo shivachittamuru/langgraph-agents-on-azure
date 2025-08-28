@@ -81,18 +81,18 @@ jobs:
           echo "==== server.log (tail) ===="
           tail -n +1 backend/server.log | sed -n '1,200p' || true
 
-      - name: Run evaluations
+      - name: Run safety evaluations
         working-directory: backend/evaluations
         run: |
           # Run evaluation which posts to the local FastAPI endpoint
-          python evaluation.py
+          python safety_evaluation.py
 
       - name: Upload evaluation results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: evaluation-results
-          path: backend/evaluations/data/evaluation_output.json
+          path: backend/evaluations/data/safety_evaluation_output.json
 
       - name: Upload server log (for troubleshooting)
         if: always()
