@@ -75,7 +75,7 @@ for item in dataset:
     if results.get("detail"):
         results = results["detail"]
         options = AnalyzeTextOptions(
-            text=str(results),
+            text=results,
             categories=["Hate", "SelfHarm", "Sexual", "Violence"],
             output_type=AnalyzeTextOutputType("EightSeverityLevels")
         )
