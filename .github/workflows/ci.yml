@@ -10,6 +10,7 @@ jobs:
   build-and-evaluate:
     name: Run backend agents and evaluations
     runs-on: ubuntu-latest
+    environment: ActionsEnv 
     env:
       # Azure / OpenAI environment variables - set these in repository secrets
       AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
@@ -19,6 +20,8 @@ jobs:
       APPLICATIONINSIGHTS_CONNECTION_STRING: ${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}
       AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED: ${{ secrets.AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED }}
       AZURE_SDK_TRACING_IMPLEMENTATION: ${{ secrets.AZURE_SDK_TRACING_IMPLEMENTATION }}
+      AZURE_CONTENT_SAFETY_ENDPOINT: ${{ secrets.AZURE_CONTENT_SAFETY_ENDPOINT }}
+      AZURE_CONTENT_SAFETY_KEY: ${{ secrets.AZURE_CONTENT_SAFETY_KEY }}
       # Optional Postgres/checkpointer env vars (if used)
       PG_VECTOR_HOST: ${{ secrets.PG_VECTOR_HOST }}
       PG_VECTOR_USER: ${{ secrets.PG_VECTOR_USER }}
@@ -28,6 +31,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Debug Connection String
+        run: echo "${{ secrets.APPLICATIONINSIGHTS_CONNECTION_STRING }}"
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -75,18 +81,18 @@ jobs:
           echo "==== server.log (tail) ===="
           tail -n +1 backend/server.log | sed -n '1,200p' || true
 
-      - name: Run evaluations
+      - name: Run safety evaluations
         working-directory: backend/evaluations
         run: |
           # Run evaluation which posts to the local FastAPI endpoint
-          python evaluation.py
+          python safety_evaluation.py
 
       - name: Upload evaluation results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: evaluation-results
-          path: backend/evaluations/data/evaluation_output.json
+          path: backend/evaluations/data/safety_evaluation_output.json
 
       - name: Upload server log (for troubleshooting)
         if: always()

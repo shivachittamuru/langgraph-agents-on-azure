@@ -1,0 +1,39 @@
+{
+    "Results": [
+        {
+            "Question": "Which artist has generated the highest total sales revenue, and how much is it?",
+            "Answer": "The artist with the highest total sales revenue is Iron Maiden, with a total revenue of 138.6.",
+            "GroundTruth": "The artist with the highest total sales revenue is Iron Maiden, with total sales of $92.97.",
+            "RelevanceScore": 3.0,
+            "SimilarityScore": 3.0
+        },
+        {
+            "Question": "For each customer, who spent the most in 2010, and what was the amount?",
+            "Answer": "Here are the customers who spent the most in 2010, along with the amount they spent:\n\n1. **Ladislav Kovács** - $21.86\n2. **Astrid Gruber** - $18.86\n3. **Luis Rojas** - $17.91\n4. **Frank Ralston** - $15.86\n5. **François Tremblay** - $13.86\n6. **Roberto Almeida** - $13.86\n7. **Frank Harris** - $13.86\n8. **Dan Miller** - $13.86\n9. **Ellie Sullivan** - $13.86\n10. **Fynn Zimmermann** - $13.86\n\nThese are the top spenders, and the list continues with other customers who spent varying amounts.",
+            "GroundTruth": "The top customer in 2010 was Mark Philips, who spent $47.62.",
+            "RelevanceScore": 3.0,
+            "SimilarityScore": 1.0
+        },
+        {
+            "Question": "Which playlist contains the largest number of tracks, and how many tracks does it have?",
+            "Answer": "The playlist with the largest number of tracks is \"Music,\" which contains 3,290 tracks.",
+            "GroundTruth": "The 'Music' playlist contains the most tracks, with 3290 tracks.",
+            "RelevanceScore": 4.0,
+            "SimilarityScore": 5.0
+        },
+        {
+            "Question": "Which country generated the highest total invoice revenue, and what was the total?",
+            "Answer": "The country that generated the highest total invoice revenue is the USA, with a total of 523.06.",
+            "GroundTruth": "The country with the highest total invoice revenue is the USA, with $523.06 in total sales.",
+            "RelevanceScore": 4.0,
+            "SimilarityScore": 4.0
+        },
+        {
+            "Question": "What are the top 3 most popular genres in terms of the number of tracks purchased across all invoices?",
+            "Answer": "The top 3 most popular genres in terms of the number of tracks purchased across all invoices are:\n\n1. Rock with 835 tracks purchased\n2. Latin with 386 tracks purchased\n3. Metal with 264 tracks purchased",
+            "GroundTruth": "The top 3 most popular genres by number of purchased tracks are Rock, Latin, and Metal.",
+            "RelevanceScore": 4.0,
+            "SimilarityScore": 5.0
+        }
+    ]
+}

@@ -3,7 +3,7 @@ import requests
 import uuid
 import json
 
-from azure.ai.evaluation import ContentSafetyEvaluator
+from azure.ai.evaluation import RelevanceEvaluator, SimilarityEvaluator
 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(), override=True)
@@ -17,7 +17,6 @@ model_config = {
     "azure_endpoint": os.environ.get("AZURE_OPENAI_ENDPOINT"),
     "api_key": os.environ.get("AZURE_OPENAI_API_KEY"),
     "azure_deployment": os.environ.get("AZURE_OPENAI_DEPLOYMENT_NAME"),
-    "azure_ai_project_endpoint": os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
 }
 
 def invoke_sql_query(message, thread_id):
@@ -32,8 +31,10 @@ def invoke_sql_query(message, thread_id):
         return res.json()["content"]
     except Exception as e:
         print(e)
+        
 
-safety_eval = ContentSafetyEvaluator(azure_ai_project=model_config["azure_ai_project_endpoint"])
+relevance_eval = RelevanceEvaluator(model_config)
+similarity_eval = SimilarityEvaluator(model_config)
 
 # Define the input and output file paths
 file_path_input = './data/evaluation_input.json'
@@ -52,24 +53,29 @@ for item in dataset:
 
     # Extract question and ground truth
     question = item["Question"]
+    ground_truth = item["GroundTruth"]
 
     # Call the function to get a response 
     results = invoke_sql_query(question, thread_id)
 
     # Compute relevance and similarity scores 
-    safety_scores = safety_eval(query=results)
+    relevance_score = relevance_eval(response=results, context=ground_truth, query=question)
+    similarity_score = similarity_eval(query=question, response=results, ground_truth=ground_truth)
 
     # Store results
     output_data["Results"].append({
         "Question": question,
         "Answer": results,
-        "SafetyScores": safety_scores
+        "GroundTruth": ground_truth,
+        "RelevanceScore": relevance_score["relevance"],
+        "SimilarityScore": similarity_score["similarity"]
     })
 
     # Print scores for debugging
     print(f"Question: {question}")
     print(f"Answer: {results}")
-    print(f"SafetyScores: {safety_scores}")
+    print(f"Relevance Score: {relevance_score}")
+    print(f"Similarity Score: {similarity_score}")
     print("-" * 50)
 
 # Write results to the output JSON file
